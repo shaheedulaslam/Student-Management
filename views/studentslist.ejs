@@ -1,0 +1,90 @@
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">HOME</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/students">STUDENTS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"></a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <!-- navbar end -->
+
+
+  <section class="h-100 h-custom" style="background-color: #8fc4b7">
+    <div class="container-fluid row">
+        <h3 class="text-center mt-3">Students List</h3>
+     <% result.forEach(el=>{ %>
+    <div class="card col-md-3 mx-3 mt-4" style="width: 25rem;">
+        <div class="card-body">
+          <h5 class="card-title">NAME: <%=el.name%></h5>
+          <h5 class="card-title">AGE:  <%=el.age%></h5>
+          <h5 class="card-title">COURSE NAME:  <%=el.course%></h5>
+          <h5 class="card-title">COURSE STARTS:  <%=el.StartedDate.toLocaleString()%></h5>
+          <h5 class="card-title">COURSE ENDS:   <%=el.EndedDate.toLocaleString()%></h5>
+          <a href="/edit/<%=el._id%>" class="btn btn-primary">Edit</a>
+          <button onclick="confirm('<%=el._id%>')" class="btn" style="color: #fff; background-color: #b02818;" id="openmodal"> delete</button>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+      
+  </section>
+
+
+
+  <script>
+    function confirm(id){
+      const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-danger',
+        cancelButton: 'btn btn-warning'
+      },
+      buttonsStyling: false
+    })
+    swalWithBootstrapButtons.fire({
+      title: 'Are you sure?',
+      text: "Are You Sure Want To delete this Student ?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location='/delete/'+id
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Successfuly deleted',
+            showConfirmButton: false,
+            timer: 3000
+          })
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Cancelled',
+          'Student is safe',
+          'error'
+        )
+      }
+    })
+    }
+    </script>
