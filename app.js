@@ -25,8 +25,7 @@ next();
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
 
 const mongoose = require('mongoose')
-const students = require('./models/students')
-mongoose.connect('mongodb://127.0.0.1:27017/students')
+mongoose.connect(process.env.MONGO_URL)
 const db = mongoose.connection
 db.on('error',error =>console.log(error))
 db.once('open',()=>console.log('db is connected'))
